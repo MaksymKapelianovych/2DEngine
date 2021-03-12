@@ -22,7 +22,6 @@ class GameObject;
 /**
  * Component is abstract object that describe concrete property of the object
  *
- * Component of each type is static container of all same objects
  *
  * All constructors are private because of new component.
  * Default constructor is deleted, all child`s default constructors must be deleted either.
