@@ -13,9 +13,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "Utils/constants.h"
-class Widget;
+class GameObject;
 
 
 /**
@@ -30,25 +31,22 @@ class Widget;
  *
  * @tparam T
  */
-template<typename T>
 class Component
 {
 protected:
-	static std::vector<T> components_;   //Component is owner for all components of it`s type
-    Widget* owner_; 			 		//Component does not control owner`s life
+    std::weak_ptr<GameObject> owner_; 			 		//Component does not control owner`s life
 
-    explicit Component(Widget* obj);
+    explicit Component(const std::shared_ptr<GameObject> &owner);
 	virtual ~Component();
 
 	/**
 	 * Static functions
 	 */
 public:
+	template <class T>
+		static std::unique_ptr<T> create(const std::shared_ptr<GameObject>& obj);
+
 	Component() = delete;
-
-
-	[[nodiscard]]
-	static T& create(Widget* obj);
 
 	/**
 	 * Component function
@@ -60,7 +58,15 @@ public:
     [[maybe_unused]]
     virtual std::string type() const;
 
-    Widget *getOwner() const;
+    std::shared_ptr<GameObject> getOwner() const;
 };
+
+template <class T>
+std::unique_ptr<T> Component::create(const std::shared_ptr<GameObject>& obj)
+{
+	return std::make_unique<T>(obj);
+}
+
+
 
 #endif // INC_2DENGINE_COMPONENT_H

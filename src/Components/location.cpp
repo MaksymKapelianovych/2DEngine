@@ -1,9 +1,8 @@
 #include "location.h"
 #include "Gui/scene.h"
 
-Location::Location(Widget *obj) : Component(obj), velocity_(0.f)
+Location::Location(const std::shared_ptr<GameObject> &owner) : Component(owner), velocity_(0.f)
 {
-
 }
 
 Location::~Location(){
@@ -22,7 +21,10 @@ void Location::moveBy(glm::vec2 offset)
 
 glm::vec2 Location::getScreenPos()
 {
-    Scene* scene = owner_->getScene();
+	if(owner_.expired()){
+		std::terminate(); // todo maybe change
+	}
+    std::shared_ptr<Scene> scene = owner_.lock()->getScene();
     glm::mat4 model = glm::mat4(1.f);
     model = glm::translate(model, glm::vec3(position_, 1.f));
 
@@ -63,3 +65,4 @@ void Location::setVelocity(const glm::vec2 &velocity)
 {
     velocity_ = velocity;
 }
+

@@ -1,34 +1,26 @@
 #include "component.h"
-#include "Gui/widget.h"
-#include <cassert>
+#include "Gui/game_object.h"
 
-template<typename T>
-Widget *Component<T>::getOwner() const
+std::shared_ptr<GameObject> Component::getOwner() const
 {
-    return owner_;
+	if(owner_.expired()){
+		std::terminate(); // todo maybe change
+	}
+    return owner_.lock();
 }
 
-template<typename T>
-Component<T>::Component(Widget* obj)
+Component::Component(const std::shared_ptr<GameObject> &owner)
 {
-    owner_ = obj;
+    owner_ = owner;
 }
 
-template<typename T>
-Component<T>::~Component()
+Component::~Component()
 {
     //Component does not control owner`s life
 }
 
-template<typename T>
-std::string Component<T>::type() const
+std::string Component::type() const
 {
     return "Component";
 }
 
-template <typename T>
-T& Component<T>::create(Widget* obj)
-{
-    assert(obj != nullptr);
-    return components_.template emplace_back(obj);
-}

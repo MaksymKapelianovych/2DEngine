@@ -12,20 +12,22 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <memory>
+#include <vector>
+
 #include "component.h"
 
-class Location : public Component<Location>
+class Location : public Component
 {
 	friend class Component;
-	explicit Location(Widget* obj);
-	~Location() override;
 
     glm::vec2 position_;
     glm::vec4 matrixPos_;
-    glm::vec2 velocity_;
+    glm::vec2 velocity_; // todo maybe change to enum Direction and double speed
 public:
 	Location() = delete;
-
+	explicit Location(const std::shared_ptr<GameObject> &owner);
+	~Location() override;
 
     void moveTo(glm::vec2 newLocation);
     void moveBy(glm::vec2 offset);
