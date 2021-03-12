@@ -1,24 +1,34 @@
 #include "component.h"
-#include "2DEngine/widget.h"
-#include <assert.h>
+#include "Gui/widget.h"
+#include <cassert>
 
-Widget *Component::getOwner() const
+template<typename T>
+Widget *Component<T>::getOwner() const
 {
     return owner_;
 }
 
-Component::Component(Widget* obj)
+template<typename T>
+Component<T>::Component(Widget* obj)
 {
-    assert(obj != nullptr);
     owner_ = obj;
 }
 
-Component::~Component()
+template<typename T>
+Component<T>::~Component()
 {
     //Component does not control owner`s life
 }
 
-std::string Component::type() const
+template<typename T>
+std::string Component<T>::type() const
 {
     return "Component";
+}
+
+template <typename T>
+T& Component<T>::create(Widget* obj)
+{
+    assert(obj != nullptr);
+    return components_.template emplace_back(obj);
 }

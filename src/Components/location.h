@@ -14,29 +14,36 @@
 
 #include "component.h"
 
-class Location : public Component
+class Location : public Component<Location>
 {
+	friend class Component;
+	explicit Location(Widget* obj);
+	~Location() override;
+
     glm::vec2 position_;
     glm::vec4 matrixPos_;
     glm::vec2 velocity_;
 public:
+	Location() = delete;
 
-    Location(Widget* obj);
-    ~Location();
 
     void moveTo(glm::vec2 newLocation);
     void moveBy(glm::vec2 offset);
+
 
     // Component interface
 public:
     void update(GLfloat deltaTime) override;
 
+
+public:
     //Getters & setters
-    glm::vec2 getScreenPos();
-    glm::vec4 getMatrixPos() const;
-    glm::vec2 getPosition() const;
-    void setPosition(const glm::vec2 &position);
-    glm::vec2 getVelocity() const;
+	[[nodiscard]] glm::vec2 getScreenPos();
+    [[nodiscard]] glm::vec4 getMatrixPos() const;
+    [[nodiscard]] glm::vec2 getPosition() const;
+	[[nodiscard]] glm::vec2 getVelocity() const;
+
+	void setPosition(const glm::vec2 &position);
     void setVelocity(const glm::vec2 &velocity);
 };
 

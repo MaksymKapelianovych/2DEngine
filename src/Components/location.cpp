@@ -1,5 +1,5 @@
 #include "location.h"
-#include "2DEngine/scene.h"
+#include "Gui/scene.h"
 
 Location::Location(Widget *obj) : Component(obj), velocity_(0.f)
 {

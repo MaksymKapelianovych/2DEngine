@@ -12,23 +12,54 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <string>
+#include <vector>
 
-#include "2DEngine/constants.h"
+#include "Utils/constants.h"
 class Widget;
 
+
+/**
+ * Component is abstract object that describe concrete property of the object
+ *
+ * Component of each type is static container of all same objects
+ *
+ * All constructors are private because of new component.
+ * Default constructor is deleted, all child`s default constructors must be deleted either.
+ *
+ * To create component use static method
+ *
+ * @tparam T
+ */
+template<typename T>
 class Component
 {
 protected:
-    Widget* owner_;  //Component does not control owner`s life
+	static std::vector<T> components_;   //Component is owner for all components of it`s type
+    Widget* owner_; 			 		//Component does not control owner`s life
+
+    explicit Component(Widget* obj);
+	virtual ~Component();
+
+	/**
+	 * Static functions
+	 */
 public:
-    Component(Widget* obj);
-    virtual ~Component();
+	Component() = delete;
 
+
+	[[nodiscard]]
+	static T& create(Widget* obj);
+
+	/**
+	 * Component function
+	 */
+
+public:
     virtual void update(GLfloat deltaTime) = 0;
-//    virtual void addObject(Widget*) = 0;
-//    virtual void removeObject(Widget*) = 0;
 
+    [[maybe_unused]]
     virtual std::string type() const;
+
     Widget *getOwner() const;
 };
 
