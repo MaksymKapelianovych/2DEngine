@@ -16,6 +16,8 @@
 #include <memory>
 
 #include "Utils/constants.h"
+#include "drawable.h"
+#include "RenderSystem/rendersystem.h"
 class GameObject;
 
 
@@ -30,12 +32,12 @@ class GameObject;
  *
  * @tparam T
  */
-class Component
+class Component : protected std::enable_shared_from_this<Component>
 {
 protected:
     std::weak_ptr<GameObject> owner_; 			 		//Component does not control owner`s life
 
-    explicit Component(const std::shared_ptr<GameObject> &owner);
+    explicit Component(const std::weak_ptr<GameObject> &owner);
 	virtual ~Component();
 
 	/**
@@ -43,7 +45,13 @@ protected:
 	 */
 public:
 	template <class T>
-		static std::unique_ptr<T> create(const std::shared_ptr<GameObject>& obj);
+	static std::shared_ptr<T> create(const std::weak_ptr<GameObject>& obj);
+
+	template <class CompType>
+	std::weak_ptr<CompType> weakFromThisByComponent();
+
+	template <class CompType>
+	std::shared_ptr<CompType> sharedFromThisByComponent();
 
 	Component() = delete;
 
@@ -61,11 +69,25 @@ public:
 };
 
 template <class T>
-std::unique_ptr<T> Component::create(const std::shared_ptr<GameObject>& obj)
+std::shared_ptr<T> Component::create(const std::weak_ptr<GameObject>& obj)
 {
-	return std::make_unique<T>(obj);
+	auto component = std::make_shared<T>(obj);
+	if constexpr (std::is_base_of_v<Drawable, T>){
+		RenderSystem::addDrawable(component);
+	}
+	return component;
 }
 
+template <class CompType>
+std::weak_ptr<CompType> Component::weakFromThisByComponent()
+{
+	return std::dynamic_pointer_cast<CompType>(weak_from_this().lock());
+}
+template <class CompType>
+std::shared_ptr<CompType> Component::sharedFromThisByComponent()
+{
+	return std::dynamic_pointer_cast<CompType>(shared_from_this());
+}
 
 
 #endif // INC_2DENGINE_COMPONENT_H

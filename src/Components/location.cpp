@@ -1,7 +1,7 @@
 #include "location.h"
 #include "Gui/scene.h"
 
-Location::Location(const std::shared_ptr<GameObject> &owner) : Component(owner), velocity_(0.f)
+Location::Location(const std::weak_ptr<GameObject> &owner) : Component(owner), velocity_(0.f)
 {
 }
 

@@ -14,9 +14,9 @@
 #include <list>
 #include <memory>
 
-#include "constants.h"
-#include "camera.h"
-#include "widget.h"
+#include "Utils/constants.h"
+#include "Components/camera.h"
+#include "game_object.h"
 
 //Create Scene builder
 

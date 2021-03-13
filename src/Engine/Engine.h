@@ -4,9 +4,14 @@
 
 #ifndef INC_2DENGINE_ENGINE_H
 #define INC_2DENGINE_ENGINE_H
+#include "RenderSystem/rendersystem.h"
+
+class GLFWwindow;
 
 //TODO maybe singleton
 class Engine {
+
+	GLFWwindow *window;
 public:
     /**
      *
@@ -20,6 +25,11 @@ public:
      * config must be set
      */
     void run();
+
+    /**
+     *
+     */
+     ~Engine();
 };
 
 

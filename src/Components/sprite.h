@@ -13,27 +13,47 @@
 #include <memory>
 
 #include "component.h"
+#include "drawable.h"
+#include "RenderSystem/shader.h"
 
-class Sprite : public Component
+class Sprite : public Component, public Drawable
 {
-	int width, height;
-	glm::vec4 color;
+	int width_, height_;
+	glm::vec3 color_;
+	std::unique_ptr<Shader> shader_;
+
+	GLfloat vertices[12] = {
+		0.5f,  0.5f, 0.0f,  // Top Right
+		0.5f, -0.5f, 0.0f,  // Bottom Right
+		-0.5f, -0.5f, 0.0f,  // Bottom Left
+		-0.5f,  0.5f, 0.0f   // Top Left
+	};
+	GLuint indices[6] = {  // Note that we start from 0!
+		0, 1, 3,  // First Triangle
+		1, 2, 3   // Second Triangle
+	};
+	GLuint VBO, VAO, EBO;
+
 
 public:
-	explicit Sprite(const std::shared_ptr<GameObject>& owner);
+	explicit Sprite(const std::weak_ptr<GameObject>& owner);
 
 	int GetWidth() const;
 	void SetWidth(int width);
 	int GetHeight() const;
 	void SetHeight(int height);
-	const glm::vec4& GetColor() const;
+	const glm::vec3& GetColor() const;
 	void SetColor(const glm::vec4& color);
 
 public:
 	virtual void update(GLfloat deltaTime) override;
 	virtual std::string type() const override;
-protected:
+
 	virtual ~Sprite() override;
+
+	// Drawable interface
+public:
+	void draw() override;
 };
 
 

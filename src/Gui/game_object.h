@@ -23,7 +23,7 @@ class Shader;
 class Scene;
 
 
-class GameObject
+class GameObject : public std::enable_shared_from_this<GameObject>
 {
 protected:
     std::weak_ptr<GameObject> parent_; // todo, get&set
@@ -40,17 +40,30 @@ public:
 
 	template <class CompType>
     void addComponent();
+
+	template <class CompType>
+		std::shared_ptr<CompType> getComponent() const;
 };
 
 template <class CompType>
 void GameObject::addComponent()
 {
+	if(getComponent<CompType>()){
+		return;
+	}
+	components.emplace_back(Component::create<CompType>(weak_from_this()));
+}
+
+template <class CompType>
+std::shared_ptr<CompType> GameObject::getComponent() const
+{
 	for(const auto& comp : components){
-		if(typeid(comp.get()) == typeid(CompType)){
-			return;
+		if(auto cast = std::dynamic_pointer_cast<CompType>(comp)){
+			return cast;
 		}
 	}
-	components.emplace_back(Component::create<CompType>(this));
+
+	return nullptr;
 }
 
 #endif // GAME_OBJECT_H

@@ -2,7 +2,7 @@
 
 #include "Components/location.h"
 
-GameObject::GameObject(const std::shared_ptr<GameObject>& parent, const glm::vec3& pos) : parent_(parent)
+GameObject::GameObject(const std::shared_ptr<GameObject>& parent, const glm::vec3& pos) : std::enable_shared_from_this<GameObject>(), parent_(parent)
 {
 	addComponent<Location>();
 }
@@ -22,6 +22,7 @@ std::shared_ptr<Scene> GameObject::getScene() const
 	}
 	return scene_.lock();
 }
+
 
 
 

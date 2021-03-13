@@ -9,7 +9,7 @@ std::shared_ptr<GameObject> Component::getOwner() const
     return owner_.lock();
 }
 
-Component::Component(const std::shared_ptr<GameObject> &owner)
+Component::Component(const std::weak_ptr<GameObject> &owner) : std::enable_shared_from_this<Component>()
 {
     owner_ = owner;
 }
@@ -23,4 +23,5 @@ std::string Component::type() const
 {
     return "Component";
 }
+
 
