@@ -19,6 +19,7 @@ public:
      */
 
     Engine();
+	~Engine();
 
     /**
      * Run the engine
@@ -26,10 +27,8 @@ public:
      */
     void run();
 
-    /**
-     *
-     */
-     ~Engine();
+    // Callbacks (temporary; todo create event system)
+    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 };
 
 
