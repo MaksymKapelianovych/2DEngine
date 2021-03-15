@@ -12,32 +12,36 @@ class Window;
 //TODO maybe singleton
 class Engine {
 
-	GLFWwindow *window;
-	std::shared_ptr<Window> w;
+	static GLFWwindow *window;
+	static std::shared_ptr<Window> w;
 
 public:
 	static int getWidth();
 	static int getHeight();
+	static std::weak_ptr<Window> getWindow();
 
 	static int WIDTH;
 	static int HEIGHT;
 
+
+	/**
+	 *
+	 * Create new engine
+	 */
+
+	Engine();
+	~Engine();
+
 public:
 
-
-    /**
-     *
-     * Create new engine
-     */
-
-    Engine();
-	~Engine();
+	static void init();
+	static void close();
 
     /**
      * Run the engine
      * config must be set
      */
-    void run();
+    static void run();
 
     // Callbacks (temporary; todo create event system)
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);

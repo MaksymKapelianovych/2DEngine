@@ -70,12 +70,6 @@ void Image::draw()
 	model = glm::translate(model, glm::vec3(center, 0.f));
 	model = glm::scale(model, glm::vec3(width_, height_, 0.f));
 
-	auto m = model * glm::vec4(0.f, 0.f, 0.f, 0.f);
-
-	std::cout << "-------------------------------------\n";
-	std::cout << m.x << " " << m.y << " " << m.z << " " << m.w << std::endl;
-	std::cout << "-------------------------------------\n";
-
 	shader_->use();
 
 	shader_->setMat4("model", model);
