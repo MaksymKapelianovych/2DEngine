@@ -18,10 +18,12 @@
 #include "Components/sprite.h"
 #include "Components/image.h"
 
-int Engine::WIDTH = 600;
-int Engine::HEIGHT = 600;
+GLFWwindow *Engine::window = nullptr;
+std::shared_ptr<Window> Engine::w = nullptr;
+int Engine::WIDTH = 800;
+int Engine::HEIGHT = 800;
 
-Engine::Engine() {
+void Engine::init() {
     // Init GLFW
     glfwInit();
     // Set all the required options for GLFW
@@ -51,27 +53,16 @@ Engine::Engine() {
 }
 
 void Engine::run() {
-	auto object = std::make_shared<GameObject>(nullptr);
-	auto q = object->addComponent<Location>();
-//	if(auto s = object->addComponent<Image>()){
-//		s->setTexture("../resources/textures/1.png");
-//	}
-
-	auto s = object->addComponent<Sprite>();
-	s->SetWidth(10);
-	s->SetHeight(10);
-	s->SetColor({1.f, 0.5f, 0.3f});
-
-	w->addToScene(object);
-	std::cout << glGetError();
 	glViewport(0, 0, Engine::WIDTH, Engine::WIDTH);
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
 		w->draw();
 	}
+
+	close();
 }
-Engine::~Engine()
+void Engine::close()
 {
 	glfwTerminate();
 }
@@ -97,4 +88,8 @@ int Engine::getWidth()
 int Engine::getHeight()
 {
 	return Engine::HEIGHT;
+}
+std::weak_ptr<Window> Engine::getWindow()
+{
+	return w;
 }
