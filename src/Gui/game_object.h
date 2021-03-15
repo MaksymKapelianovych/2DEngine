@@ -28,6 +28,7 @@ class GameObject : public std::enable_shared_from_this<GameObject>
 	friend class Scene;
 protected:
     std::weak_ptr<GameObject> parent_; // todo, get&set
+    std::vector<std::shared_ptr<GameObject>> childs_;
     std::weak_ptr<Scene> scene_;
 	void setScene(std::weak_ptr<Scene> scene);
 
@@ -41,10 +42,10 @@ public:
     void draw();
 
     [[nodiscard]] std::shared_ptr<Scene> getScene() const;
+	void addChild(std::shared_ptr<GameObject> &&child);
 
 	template <class CompType>
 	std::shared_ptr<CompType> addComponent();
-
 	template <class CompType>
 	std::shared_ptr<CompType> getComponent() const;
 };

@@ -41,6 +41,13 @@ void GameObject::update(GLfloat dt)
 		comp->update(dt);
 	}
 }
+void GameObject::addChild(std::shared_ptr<GameObject>&& child)
+{
+	if(child.use_count() != 1){
+		std::terminate(); // todo change with warning
+	}
+	childs_.emplace_back(child);
+}
 
 
 
