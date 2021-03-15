@@ -1,116 +1,70 @@
 #include "window.h"
 
-Window::Window(GLuint width, GLuint height): m_width(width), m_height(height)
+#include "scene.h"
+
+Window::Window(GLFWwindow *window, GLuint width, GLuint height)
+	: std::enable_shared_from_this<Window>(), window_(window), width_(width), height_(height)
 {
 
 }
 
-void Window::update(double deltaTime)
+void Window::init()
+{
+	scene_ = std::make_shared<Scene>(weak_from_this());
+	panel_ = std::make_shared<Scene>(weak_from_this());
+}
+
+
+void Window::update(GLfloat deltaTime)
 {
 
 }
 
-void Window::draw(){
-    glViewport(0, 0, m_width, m_height);
-    glEnable(GL_DEPTH_TEST);
+void Window::draw()
+{
+	// Clear the colorbuffer
+	glClearColor(0.f, 0.f, 0.f, 1.f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for(auto it = childs.begin(); it != childs.end(); ++it){
-        (*it)->draw();
-    }
+	scene_->draw();
+	//panel_->draw();
 
-//    for(auto it = objects.begin(); it != objects.end(); ++it){
-//        (*it)->draw();
-//    }
-    glDisable(GL_DEPTH_TEST);
+	// Swap the screen buffers
+	glfwSwapBuffers(window_);
 }
 
 GLuint Window::getWidth() const
 {
-    return m_width;
+    return width_;
 }
 
 void Window::setWidth(const GLuint &value)
 {
-    m_width = value;
+	width_ = value;
 }
 
 GLuint Window::getHeight() const
 {
-    return m_height;
+    return height_;
 }
 
 void Window::setHeight(const GLuint &value)
 {
-    m_height = value;
+	height_ = value;
 }
-
-//bool Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-//{
-//    if(activeScene){
-//        activeScene->key_callback(window, key, scancode, action, mode);
-//    }
-//    for(auto it = childs.begin(); it != childs.end(); ++it){
-//        if((*it)->key_callback(window, key, scancode, action, mode)){
-//            return true;
-//        }
-//    }
-//    return false;
-//}
-
-//bool Window::mouse_callback(double xpos, double ypos)
-//{
-//    if(Scene::mouse_callback(xpos, ypos)){
-//        return true;
-//    }
-//    return false;
-//    for(auto it = childs.begin(); it != childs.end(); ++it){
-//        if((*it)->mouse_callback(xpos, ypos)){
-//            activeScene = (*it);
-//            return true;
-//        }
-//    }
-//    return false;
-//}
-
-//bool Window::scroll_callback(double xoffset, double yoffset)
-//{
-//    if(activeScene){
-//        return activeScene->scroll_callback(xoffset, yoffset);
-//    }
-//    return false;
-//    for(auto it = childs.begin(); it != childs.end(); ++it){
-//        if((*it)->scroll_callback(xoffset, yoffset)){
-//            return true;
-//        }
-//    }
-//    return false;
-//}
-
-//bool Window::mouseKey(int button, int action, int mode)
-//{
-//    if(activeScene){
-//        return activeScene->mouseKey(button, action, mode);
-//    }
-//    return false;
-//    for(auto it = childs.begin(); it != childs.end(); ++it){
-//        if((*it)->mouseKey(button, action, mode)){
-//            return true;
-//        }
-//    }
-//    return false;
-//}
-
-//bool Window::drag_drop(double xoffset, double yoffset)
-//{
-//    return false;
-//}
-
-//void Window::update(double deltaTime)
-//{
-//    if(activeScene){
-//        activeScene->update(deltaTime);
-//    }
-//    for(auto it = childs.begin(); it != childs.end(); ++it){
-//        (*it)->do_movement(deltaTime);
-//    }
-//}
+std::weak_ptr<Scene> Window::getScene() const
+{
+	return scene_;
+}
+std::weak_ptr<Scene> Window::getPanel() const
+{
+	return panel_;
+}
+void Window::addToScene(const std::shared_ptr<GameObject>& object)
+{
+	scene_->addObject(object);
+}
+void Window::addToPanel(const std::shared_ptr<GameObject>& object)
+{
+	panel_->addObject(object);
+}

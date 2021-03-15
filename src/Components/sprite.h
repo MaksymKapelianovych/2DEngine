@@ -14,10 +14,11 @@
 
 #include "component.h"
 #include "drawable.h"
-#include "RenderSystem/shader.h"
+#include "Gui/shader.h"
 
 class Sprite : public Component, public Drawable
 {
+	static const GLfloat WIDTH_SCALE, HEIGHT_SCALE;
 	int width_, height_;
 	glm::vec3 color_;
 	std::unique_ptr<Shader> shader_;
@@ -34,7 +35,6 @@ class Sprite : public Component, public Drawable
 	};
 	GLuint VBO, VAO, EBO;
 
-
 public:
 	explicit Sprite(const std::weak_ptr<GameObject>& owner);
 
@@ -43,7 +43,8 @@ public:
 	int GetHeight() const;
 	void SetHeight(int height);
 	const glm::vec3& GetColor() const;
-	void SetColor(const glm::vec4& color);
+	void SetColor(const glm::vec3& color);
+
 
 public:
 	virtual void update(GLfloat deltaTime) override;

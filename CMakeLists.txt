@@ -1,15 +1,11 @@
-cmake_minimum_required(VERSION 3.16.3)
+cmake_minimum_required(VERSION 3.5)
 project(2DEngine)
 
 set(CMAKE_CXX_STANDARD 20)
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-
 
 add_executable(2DEngine main.cpp
-        src/Components/camera.cpp
-        src/Components/camera.h
+        src/Gui/camera.cpp
+        src/Gui/camera.h
         src/Components/component.cpp
         src/Components/component.h
         src/Components/location.cpp
@@ -28,16 +24,14 @@ add_executable(2DEngine main.cpp
         src/Gui/window.h
         src/Gui/game_object.cpp
         src/Gui/game_object.h
-        src/RenderSystem/rendersystem.cpp
-        src/RenderSystem/rendersystem.h
-        src/RenderSystem/shader.cpp
-        src/RenderSystem/shader.h
+        src/Gui/shader.cpp
+        src/Gui/shader.h
         src/Utils/constants.h
         src/Utils/noise.h
         src/Utils/stb_image.h
         src/Utils/utils.h
         src/Engine/Engine.cpp
-        src/Engine/Engine.h src/EventSystem/mouseevents.cpp src/EventSystem/mouseevents.h src/Components/sprite.cpp src/Components/sprite.h src/Components/drawable.cpp src/Components/drawable.h)
+        src/Engine/Engine.h src/EventSystem/mouseevents.cpp src/EventSystem/mouseevents.h src/Components/sprite.cpp src/Components/sprite.h src/Components/drawable.cpp src/Components/drawable.h src/Components/image.cpp src/Components/image.h)
 
 include_directories(src)
 

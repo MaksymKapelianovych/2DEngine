@@ -1,5 +1,7 @@
 #include "location.h"
 #include "Gui/scene.h"
+#include "Gui/game_object.h"
+#include "Engine/Engine.h"
 
 Location::Location(const std::weak_ptr<GameObject> &owner) : Component(owner), velocity_(0.f)
 {
@@ -30,9 +32,8 @@ glm::vec2 Location::getScreenPos()
 
     matrixPos_ = glm::vec4(scene->getProjection() * scene->getView() * model * glm::vec4(0.f, 0.f, 0.f, 1.0f));
 
-    glm::vec2 pos = glm::vec2(scene->getWidth()/2+scene->getWidth()/2*matrixPos_.x/matrixPos_.w,
-                              scene->getHeight()/2-scene->getHeight()/2*matrixPos_.y/matrixPos_.w);
-    pos += scene->getWindowPos();
+    glm::vec2 pos = glm::vec2(Engine::getWidth()/2+Engine::getWidth()/2*matrixPos_.x/matrixPos_.w,
+						Engine::getHeight()/2-Engine::getHeight()/2*matrixPos_.y/matrixPos_.w);
     return pos;
 }
 

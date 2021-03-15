@@ -72,9 +72,6 @@ template <class T>
 std::shared_ptr<T> Component::create(const std::weak_ptr<GameObject>& obj)
 {
 	auto component = std::make_shared<T>(obj);
-	if constexpr (std::is_base_of_v<Drawable, T>){
-		RenderSystem::addDrawable(component);
-	}
 	return component;
 }
 

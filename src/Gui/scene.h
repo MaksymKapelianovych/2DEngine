@@ -11,90 +11,50 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <list>
 #include <memory>
+#include <vector>
 
 #include "Utils/constants.h"
-#include "Components/camera.h"
-#include "game_object.h"
+//#include "window.h"
+#include "camera.h"
 
 //Create Scene builder
+class Window;
+class GameObject;
+class Drawable;
 
-
-class Scene
+class Scene : std::enable_shared_from_this<Scene>
 {
-protected:
+private:
     glm::mat4 projection;
     std::unique_ptr<Camera> camera;
 
-
-    GLuint m_width, m_height, m_x, m_y;
-    Scene *parent;
-
-    std::list<std::shared_ptr<Scene>> childs;
-    //std::list<std::shared_ptr<Widget>> objects;
-    //std::shared_ptr<Scene> activeScene;
-    //std::shared_ptr<Widget> activeWidget;
-
+    std::weak_ptr<Window> parent_;
+	std::vector<std::shared_ptr<GameObject>> objects_;
 
     static bool    keys[1024];
-    GLfloat lastX  =  m_width  / 2.0;
-    GLfloat lastY  =  m_height / 2.0;
+//    GLfloat lastX  =  width_  / 2.0;
+//    GLfloat lastY  =  height_ / 2.0;
 
     Mouse mouseState = Mouse::NONE;
     bool enableDrag = false;
 
 
 public:
-    Scene(Scene* parent = nullptr);
-    Scene( GLuint x, GLuint y, GLuint width, GLuint height,Scene* parent = nullptr);
+    Scene(std::weak_ptr<Window> parent);
 
-    virtual ~Scene();
+    ~Scene();
 
+    void update(GLfloat deltaTime);
+    void draw();
 
-    void addChild(std::shared_ptr<Scene> child);
-    void removeChild(std::shared_ptr<Scene> child);
+	void addObject(const std::shared_ptr<GameObject>& object);
 
-    //void addObject(std::shared_ptr<Widget> obj);
-    //void removeObject(std::shared_ptr<Widget> obj);
+    [[nodiscard]] glm::mat4 getView() const;
+    [[nodiscard]] glm::mat4 getProjection() const;
 
-    virtual void draw();
-    virtual void update(double deltaTime);
-//    virtual bool key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
-//    virtual bool mouse_callback(double xpos, double ypos);
-//    virtual bool scroll_callback(double xoffset, double yoffset)=0;
-//    virtual bool mouseKey (int button, int action, int mode )=0;
-//    virtual bool drag_drop(double xoffset, double yoffset)=0;
-//    virtual void do_movement(double deltaTime)=0;
+	[[nodiscard]] glm::vec3 getCameraPosition();
 
-    //Getters & setters
-    GLuint getWidth() const;
-    void setWidth(const GLuint &value);
-
-    GLuint getHeight() const;
-    void setHeight(const GLuint &value);
-
-    GLuint getX() const;
-    void setX(const GLuint &value);
-
-    GLuint getY() const;
-    void setY(const GLuint &value);
-
-    glm::vec2 getPos() const;
-    void setPos(const glm::vec2& pos);
-    void setPos(GLint x, GLint y);
-
-    void setParent(Scene *p);
-    Scene *getParent() const;
-
-    glm::mat4 getView() const;
-
-    glm::mat4 getProjection() const;
-    void setProjection(const glm::mat4 &value);
-
-    glm::vec3 getCameraPosition();
-
-    glm::vec2 getWindowPos();
 
 };
 

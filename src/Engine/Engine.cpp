@@ -3,6 +3,7 @@
 //
 
 #include "Engine.h"
+#include <iostream>
 
 // GLEW
 #define GLEW_STATIC
@@ -10,9 +11,15 @@
 
 // GLFW
 #include <GLFW/glfw3.h>
+#include <Components/location.h>
 
 #include "Gui/game_object.h"
+#include "Gui/window.h"
 #include "Components/sprite.h"
+#include "Components/image.h"
+
+int Engine::WIDTH = 600;
+int Engine::HEIGHT = 600;
 
 Engine::Engine() {
     // Init GLFW
@@ -25,7 +32,9 @@ Engine::Engine() {
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
 
-	window = glfwCreateWindow(800, 600, "GL Engine", nullptr, nullptr);
+	window = glfwCreateWindow(Engine::WIDTH, Engine::HEIGHT, "GL Engine", nullptr, nullptr);
+	w = std::make_shared<Window>(window, Engine::WIDTH, Engine::HEIGHT);
+	w->init();
 
 	glfwMakeContextCurrent(window);
 	glfwSetKeyCallback(window, key_callback);
@@ -38,18 +47,28 @@ Engine::Engine() {
 	// Initialize GLEW to setup the OpenGL Function pointers
 	glewInit();
 
-	RenderSystem::init(window);
+	//RenderSystem::init(window);
 }
 
 void Engine::run() {
 	auto object = std::make_shared<GameObject>(nullptr);
-	object->addComponent<Sprite>();
-	auto s = object->getComponent<Sprite>();
+	auto q = object->addComponent<Location>();
+	if(auto s = object->addComponent<Image>()){
+		s->setTexture("../resources/textures/1.png");
+	}
+
+//	auto s = object->addComponent<Sprite>();
+//	s->SetWidth(10);
+//	s->SetHeight(10);
+//	s->SetColor({1.f, 0.5f, 0.3f});
+
+	w->addToScene(object);
+	std::cout << glGetError();
+	glViewport(0, 0, Engine::WIDTH, Engine::WIDTH);
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
-
-		RenderSystem::draw();
+		w->draw();
 	}
 }
 Engine::~Engine()
@@ -61,11 +80,21 @@ void Engine::key_callback(GLFWwindow* window, int key, int scancode, int action,
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
-//	if (key >= 0 && key < 1024)
-//	{
-//		if (action == GLFW_PRESS)
-//			keys[key] = true;
-//		else if (action == GLFW_RELEASE)
-//			keys[key] = false;
-//	}
+	if (key >= 0 && key < 1024)
+	{
+		if (action == GLFW_PRESS)
+			int r = action;
+			//keys[key] = true;
+		else if (action == GLFW_RELEASE)
+			return;
+			//keys[key] = false;
+	}
+}
+int Engine::getWidth()
+{
+	return Engine::WIDTH;
+}
+int Engine::getHeight()
+{
+	return Engine::HEIGHT;
 }

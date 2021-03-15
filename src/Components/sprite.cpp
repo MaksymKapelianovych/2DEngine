@@ -2,14 +2,17 @@
 // Created by zephyrus on 12.03.21.
 //
 
+
 #include "sprite.h"
 #include "Gui/game_object.h"
 #include "location.h"
-#include "RenderSystem/rendersystem.h"
+
+const GLfloat Sprite::WIDTH_SCALE = 10.f;
+const GLfloat Sprite::HEIGHT_SCALE = 10.f;
 
 Sprite::Sprite(const std::weak_ptr<GameObject>& owner) : Component(owner)
 {
-	shader_ = std::make_unique<Shader>("../resources/shaders/sprite.vert", "../resources/shaders/sprite.frag");
+    shader_ = std::make_unique<Shader>("../resources/shaders/sprite.vert", "../resources/shaders/sprite.frag");
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
@@ -28,6 +31,9 @@ Sprite::Sprite(const std::weak_ptr<GameObject>& owner) : Component(owner)
 	glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
 
 	glBindVertexArray(0);
+
+	SetWidth(Sprite::WIDTH_SCALE);
+	SetHeight(Sprite::HEIGHT_SCALE);
 }
 
 void Sprite::update(GLfloat deltaTime)
@@ -62,10 +68,11 @@ const glm::vec3& Sprite::GetColor() const
 {
 	return color_;
 }
-void Sprite::SetColor(const glm::vec4& color)
+void Sprite::SetColor(const glm::vec3& color)
 {
 	Sprite::color_ = color;
 }
+
 void Sprite::draw()
 {
 	if(owner_.expired()){
@@ -76,11 +83,17 @@ void Sprite::draw()
 	auto owner = owner_.lock();
 	glm::vec2 center = owner->getComponent<Location>()->getPosition();
 
+	glm::mat4 model{1.f};
+	//model = glm::translate(model, glm::vec3(center, 0.f));
+	model = glm::scale(model, glm::vec3(width_ / Sprite::WIDTH_SCALE, height_ / HEIGHT_SCALE, 1.f));
+
 	shader_->use();
 
+    shader_->setMat4("model", model);
+	shader_->setVec3("color", color_);
 	glBindVertexArray(VAO);
 	//glDrawArrays(GL_TRIANGLES, 0, 6);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
 

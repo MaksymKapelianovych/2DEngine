@@ -25,33 +25,42 @@ class Scene;
 
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
+	friend class Scene;
 protected:
     std::weak_ptr<GameObject> parent_; // todo, get&set
     std::weak_ptr<Scene> scene_;
+	void setScene(std::weak_ptr<Scene> scene);
 
     std::vector<std::shared_ptr<Component>> components;
 
 public:
     explicit GameObject(const std::shared_ptr<GameObject>& parent, const glm::vec3 &pos = glm::vec3(0.f));
-    virtual ~GameObject();
+    ~GameObject();
 
-    virtual void draw();
+    void update(GLfloat dt);
+    void draw();
+
     [[nodiscard]] std::shared_ptr<Scene> getScene() const;
 
 	template <class CompType>
-    void addComponent();
+	std::shared_ptr<CompType> addComponent();
 
 	template <class CompType>
-		std::shared_ptr<CompType> getComponent() const;
+	std::shared_ptr<CompType> getComponent() const;
 };
 
 template <class CompType>
-void GameObject::addComponent()
+std::shared_ptr<CompType> GameObject::addComponent()
 {
 	if(getComponent<CompType>()){
-		return;
+		return nullptr;
 	}
-	components.emplace_back(Component::create<CompType>(weak_from_this()));
+	if constexpr (std::is_base_of_v<Drawable, CompType>){
+		if(getComponent<Drawable>()){
+			return nullptr;
+		}
+	}
+	return std::dynamic_pointer_cast<CompType>(components.emplace_back(Component::create<CompType>(weak_from_this())));
 }
 
 template <class CompType>
