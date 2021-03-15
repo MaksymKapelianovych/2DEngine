@@ -4,27 +4,27 @@
 
 #include "game_object.h"
 #include "Components/drawable.h"
+#include "Engine/Engine.h"
+#include "camera.h"
 
 bool Scene::keys[1024];
 
 
-Scene::Scene(std::weak_ptr<Window> parent) : std::enable_shared_from_this<Scene>(), parent_(std::move(parent))
+Scene::Scene(std::weak_ptr<Window> parent)
+		: std::enable_shared_from_this<Scene>(), parent_(std::move(parent))
 {
-
+	camera = std::make_unique<Camera>(0.f, 0.f, 1.f);
 }
 
 Scene::~Scene()
 {
 }
 
-glm::mat4 Scene::getView() const
-{
-    return camera->getViewMatrix();
-}
-
 glm::mat4 Scene::getProjection() const
 {
-    return projection;
+	int w = Engine::WIDTH / 2;
+	int h = Engine::HEIGHT / 2;
+    return glm::ortho(camera->position_.x - w, camera->position_.x + w, camera->position_.y + h, camera->position_.y - h, -1.f, 1.f);
 }
 
 glm::vec3 Scene::getCameraPosition()

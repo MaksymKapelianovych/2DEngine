@@ -53,14 +53,14 @@ Engine::Engine() {
 void Engine::run() {
 	auto object = std::make_shared<GameObject>(nullptr);
 	auto q = object->addComponent<Location>();
-	if(auto s = object->addComponent<Image>()){
-		s->setTexture("../resources/textures/1.png");
-	}
+//	if(auto s = object->addComponent<Image>()){
+//		s->setTexture("../resources/textures/1.png");
+//	}
 
-//	auto s = object->addComponent<Sprite>();
-//	s->SetWidth(10);
-//	s->SetHeight(10);
-//	s->SetColor({1.f, 0.5f, 0.3f});
+	auto s = object->addComponent<Sprite>();
+	s->SetWidth(10);
+	s->SetHeight(10);
+	s->SetColor({1.f, 0.5f, 0.3f});
 
 	w->addToScene(object);
 	std::cout << glGetError();

@@ -30,7 +30,7 @@ glm::vec2 Location::getScreenPos()
     glm::mat4 model = glm::mat4(1.f);
     model = glm::translate(model, glm::vec3(position_, 1.f));
 
-    matrixPos_ = glm::vec4(scene->getProjection() * scene->getView() * model * glm::vec4(0.f, 0.f, 0.f, 1.0f));
+    matrixPos_ = glm::vec4(scene->getProjection() * model * glm::vec4(0.f, 0.f, 0.f, 1.0f));
 
     glm::vec2 pos = glm::vec2(Engine::getWidth()/2+Engine::getWidth()/2*matrixPos_.x/matrixPos_.w,
 						Engine::getHeight()/2-Engine::getHeight()/2*matrixPos_.y/matrixPos_.w);

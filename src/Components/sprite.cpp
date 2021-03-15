@@ -1,9 +1,10 @@
 //
 // Created by zephyrus on 12.03.21.
 //
-
+#include <iostream>
 
 #include "sprite.h"
+#include "Gui/scene.h"
 #include "Gui/game_object.h"
 #include "location.h"
 
@@ -82,15 +83,19 @@ void Sprite::draw()
 
 	auto owner = owner_.lock();
 	glm::vec2 center = owner->getComponent<Location>()->getPosition();
+	glm::mat4 projection = owner->getScene()->getProjection();
 
 	glm::mat4 model{1.f};
-	//model = glm::translate(model, glm::vec3(center, 0.f));
-	model = glm::scale(model, glm::vec3(width_ / Sprite::WIDTH_SCALE, height_ / HEIGHT_SCALE, 1.f));
+	model = glm::translate(model, glm::vec3(0.f, 0.f, 0.f));
+	model = glm::scale(model, glm::vec3(300.f, 300.f, 0.f));
 
 	shader_->use();
 
+	shader_->setMat4("projection", projection);
     shader_->setMat4("model", model);
 	shader_->setVec3("color", color_);
+
+
 	glBindVertexArray(VAO);
 	//glDrawArrays(GL_TRIANGLES, 0, 6);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);

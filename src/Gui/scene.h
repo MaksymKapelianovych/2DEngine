@@ -23,10 +23,10 @@ class Window;
 class GameObject;
 class Drawable;
 
-class Scene : std::enable_shared_from_this<Scene>
+class Scene : public std::enable_shared_from_this<Scene>
 {
 private:
-    glm::mat4 projection;
+    //glm::mat4 projection;
     std::unique_ptr<Camera> camera;
 
     std::weak_ptr<Window> parent_;
@@ -50,7 +50,6 @@ public:
 
 	void addObject(const std::shared_ptr<GameObject>& object);
 
-    [[nodiscard]] glm::mat4 getView() const;
     [[nodiscard]] glm::mat4 getProjection() const;
 
 	[[nodiscard]] glm::vec3 getCameraPosition();

@@ -17,7 +17,7 @@
 
 #include "Utils/constants.h"
 #include "drawable.h"
-#include "RenderSystem/rendersystem.h"
+
 class GameObject;
 
 

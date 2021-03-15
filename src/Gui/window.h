@@ -18,7 +18,7 @@
 class Scene;
 class GameObject;
 
-class Window : std::enable_shared_from_this<Window>
+class Window : public std::enable_shared_from_this<Window>
 {
 public:
 	//Window() = delete;

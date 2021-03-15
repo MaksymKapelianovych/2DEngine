@@ -31,16 +31,12 @@ class Camera
 public:
     //Vectors
     glm::vec3 position_;
-    const glm::vec3 up_, front_;
 
     //Options
     GLfloat speed, sensitivity, zoom;
 
-    Camera(const glm::vec3& position);
-    Camera(glm::vec3 &&position);
+    Camera(glm::vec3 position = {0.f, 0.f, 30.f});
     Camera(GLfloat posX, GLfloat posY, GLfloat posZ);
-
-    glm::mat4 getViewMatrix();
 
 //    void ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime);
 //    void ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset, GLboolean constrainPitch = true);

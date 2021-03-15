@@ -6,8 +6,6 @@
 #define INC_2DENGINE_ENGINE_H
 #include <memory>
 
-#include "RenderSystem/rendersystem.h"
-
 class GLFWwindow;
 class Window;
 
@@ -17,11 +15,12 @@ class Engine {
 	GLFWwindow *window;
 	std::shared_ptr<Window> w;
 
-	static int WIDTH, HEIGHT;
 public:
 	static int getWidth();
 	static int getHeight();
 
+	static int WIDTH;
+	static int HEIGHT;
 
 public:
 
