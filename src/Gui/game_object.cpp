@@ -40,6 +40,10 @@ void GameObject::update(GLfloat dt)
 	for(auto& comp : components){
 		comp->update(dt);
 	}
+
+//	for(auto& child: childs_){
+//		child->update(dt);
+//	}
 }
 void GameObject::addChild(std::shared_ptr<GameObject>&& child)
 {
@@ -47,6 +51,10 @@ void GameObject::addChild(std::shared_ptr<GameObject>&& child)
 		std::terminate(); // todo change with warning
 	}
 	childs_.emplace_back(child);
+}
+std::weak_ptr<GameObject> GameObject::getParent() const
+{
+	return parent_;
 }
 
 

@@ -42,6 +42,7 @@ public:
     void draw();
 
     [[nodiscard]] std::shared_ptr<Scene> getScene() const;
+    [[nodiscard]] std::weak_ptr<GameObject> getParent() const; // todo maybe change to std::optional
 	void addChild(std::shared_ptr<GameObject> &&child);
 
 	template <class CompType>

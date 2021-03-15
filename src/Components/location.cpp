@@ -68,6 +68,9 @@ void Location::setVelocity(const glm::vec2 &velocity)
 }
 glm::vec2 Location::getWorldPosition() const
 {
-	return owner_.lock()->getComponent<Location>()->getScreenPos() + getLocalPosition();
+	if(auto owner = owner_.lock()->getParent().lock()){
+		return owner->getComponent<Location>()->getWorldPosition() + getLocalPosition();
+	}
+	return getLocalPosition();
 }
 
