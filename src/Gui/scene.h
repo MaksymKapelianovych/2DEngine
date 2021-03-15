@@ -31,6 +31,7 @@ private:
 
     std::weak_ptr<Window> parent_;
 	std::vector<std::shared_ptr<GameObject>> objects_;
+	//std::vector<std::weak_ptr<Drawable>> drawable_;
 
     static bool    keys[1024];
 //    GLfloat lastX  =  width_  / 2.0;

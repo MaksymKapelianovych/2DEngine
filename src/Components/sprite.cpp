@@ -82,7 +82,7 @@ void Sprite::draw()
 
 
 	auto owner = owner_.lock();
-	glm::vec2 center = owner->getComponent<Location>()->getPosition();
+	glm::vec2 center = owner->getComponent<Location>()->getWorldPosition();
 	glm::mat4 projection = owner->getScene()->getProjection();
 	glm::mat4 model{1.f};
 	model = glm::translate(model, glm::vec3(center, 0.f));

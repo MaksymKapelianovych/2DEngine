@@ -42,7 +42,8 @@ public:
     //Getters & setters
 	[[nodiscard]] glm::vec2 getScreenPos();
     [[nodiscard]] glm::vec4 getMatrixPos() const;
-    [[nodiscard]] glm::vec2 getPosition() const;
+    [[nodiscard]] glm::vec2 getLocalPosition() const;
+    [[nodiscard]] glm::vec2 getWorldPosition() const;
 	[[nodiscard]] glm::vec2 getVelocity() const;
 
 	void setPosition(const glm::vec2 &position);

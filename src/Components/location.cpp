@@ -42,7 +42,7 @@ void Location::update(GLfloat deltaTime)
     position_ += velocity_ * deltaTime;
 }
 
-glm::vec2 Location::getPosition() const
+glm::vec2 Location::getLocalPosition() const
 {
     return position_;
 }
@@ -65,5 +65,9 @@ glm::vec2 Location::getVelocity() const
 void Location::setVelocity(const glm::vec2 &velocity)
 {
     velocity_ = velocity;
+}
+glm::vec2 Location::getWorldPosition() const
+{
+	return owner_.lock()->getComponent<Location>()->getScreenPos() + getLocalPosition();
 }
 
