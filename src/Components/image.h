@@ -17,22 +17,22 @@ class Image : public Component, public Drawable
 {
 	int width_, height_;
 	std::unique_ptr<Shader> shader_;
-	glm::mat4 model_{1.f};
 	GLfloat vertices[20] = {
 		0.5f,  0.5f, 0.0f, 1.f, 1.f,  //Top Right
 		0.5f, -0.5f, 0.0f, 1.f, 0.f,  // Bottom Right
 		-0.5f, -0.5f, 0.0f, 0.f, 0.f,  // Bottom Left
 		-0.5f,  0.5f, 0.0f, 0.f, 1.f   // Top Left
 	};
-public:
-	virtual void update(GLfloat deltaTime) override;
-private:
 	GLuint indices[6] = {  // Note that we start from 0!
 		0, 1, 3,  // First Triangle
 		1, 2, 3   // Second Triangle
 	};
 	GLuint VBO, VAO, EBO;
 	GLuint texture_;
+
+public:
+	virtual void update(GLfloat deltaTime) override;
+
 
 public:
 	Image() = delete;

@@ -6,7 +6,9 @@
 
 #include "image.h"
 #include "Gui/game_object.h"
+#include "Gui/scene.h"
 #include "location.h"
+#include <iostream>
 
 Image::Image(const std::weak_ptr<GameObject>& owner) : Component(owner)
 {
@@ -35,7 +37,6 @@ Image::Image(const std::weak_ptr<GameObject>& owner) : Component(owner)
 void Image::setTexture(const GLchar* path)
 {
 	loadTexture(texture_, path);
-
 }
 void Image::loadTexture(GLuint& texture, const GLchar* path)
 {
@@ -63,14 +64,24 @@ void Image::draw()
 
 	auto owner = owner_.lock();
 	glm::vec2 center = owner->getComponent<Location>()->getPosition();
+	glm::mat4 projection = owner->getScene()->getProjection();
 
-	//model_ = glm::translate(model_, glm::vec3(center, 0.f));
-	//model_ = glm::scale(model_, glm::vec3(width_, height_, 1.f));
+	glm::mat4 model{1.f};
+	model = glm::translate(model, glm::vec3(center, 0.f));
+	model = glm::scale(model, glm::vec3(width_, height_, 0.f));
+
+	auto m = model * glm::vec4(0.f, 0.f, 0.f, 0.f);
+
+	std::cout << "-------------------------------------\n";
+	std::cout << m.x << " " << m.y << " " << m.z << " " << m.w << std::endl;
+	std::cout << "-------------------------------------\n";
 
 	shader_->use();
 
-	shader_->setMat4("model", model_);
+	shader_->setMat4("model", model);
+	shader_->setMat4("projection", projection);
 	shader_->setInt("tex", 0);
+
 	//bind texture
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture_);
