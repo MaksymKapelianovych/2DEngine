@@ -14,14 +14,15 @@ class Engine {
 
 	static GLFWwindow *window;
 	static std::shared_ptr<Window> w;
+	static int WIDTH;
+	static int HEIGHT;
 
 public:
 	static int getWidth();
 	static int getHeight();
-	static std::weak_ptr<Window> getWindow();
+	static std::shared_ptr<Window> getWindow();
 
-	static int WIDTH;
-	static int HEIGHT;
+
 
 
 	/**

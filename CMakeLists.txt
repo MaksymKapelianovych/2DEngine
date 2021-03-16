@@ -31,7 +31,7 @@ add_executable(2DEngine main.cpp
         src/Utils/stb_image.h
         src/Utils/utils.h
         src/Engine/Engine.cpp
-        src/Engine/Engine.h src/EventSystem/mouseevents.cpp src/EventSystem/mouseevents.h src/Components/sprite.cpp src/Components/sprite.h src/Components/drawable.cpp src/Components/drawable.h src/Components/image.cpp src/Components/image.h)
+        src/Engine/Engine.h src/EventSystem/mouseevents.cpp src/EventSystem/mouseevents.h src/Components/sprite.cpp src/Components/sprite.h src/Components/drawable.cpp src/Components/drawable.h src/Components/image.cpp src/Components/image.h Map.cpp Map.h Cell.cpp Cell.h)
 
 include_directories(src)
 

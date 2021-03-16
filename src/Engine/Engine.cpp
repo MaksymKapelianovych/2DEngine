@@ -89,7 +89,7 @@ int Engine::getHeight()
 {
 	return Engine::HEIGHT;
 }
-std::weak_ptr<Window> Engine::getWindow()
+std::shared_ptr<Window> Engine::getWindow()
 {
 	return w;
 }

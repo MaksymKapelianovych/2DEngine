@@ -35,7 +35,7 @@ protected:
     std::vector<std::shared_ptr<Component>> components;
 
 public:
-    explicit GameObject(const std::shared_ptr<GameObject>& parent, const glm::vec3 &pos = glm::vec3(0.f));
+    explicit GameObject(std::weak_ptr<GameObject> parent = std::weak_ptr<GameObject>(), const glm::vec3 &pos = glm::vec3(0.f));
     ~GameObject();
 
     void update(GLfloat dt);

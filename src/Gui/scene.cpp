@@ -22,8 +22,8 @@ Scene::~Scene()
 
 glm::mat4 Scene::getProjection() const
 {
-	int w = Engine::WIDTH / 2;
-	int h = Engine::HEIGHT / 2;
+	int w = Engine::getWidth() / 2;
+	int h = Engine::getHeight() / 2;
     return glm::ortho(camera->position_.x - w, camera->position_.x + w, camera->position_.y + h, camera->position_.y - h, -1.f, 1.f);
 }
 
@@ -41,10 +41,13 @@ void Scene::update(GLfloat deltaTime)
 }
 void Scene::draw()
 {
-	for(auto& object : objects_){
-		if(auto drawable = object->getComponent<Drawable>()){
-			drawable->draw();
-		}
+//	for(auto& object : objects_){
+//		if(auto drawable = object->getComponent<Drawable>()){
+//			drawable->draw();
+//		}
+//	}
+	for(auto& object: objects_){
+		object->draw();
 	}
 }
 

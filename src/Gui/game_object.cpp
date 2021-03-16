@@ -4,10 +4,10 @@
 
 #include "Components/location.h"
 
-GameObject::GameObject(const std::shared_ptr<GameObject>& parent, const glm::vec3& pos) : std::enable_shared_from_this<GameObject>(), parent_(parent)
+GameObject::GameObject(std::weak_ptr<GameObject> parent, const glm::vec3& pos) : std::enable_shared_from_this<GameObject>(), parent_(std::move(parent))
 {
-	if(parent){
-		scene_ = parent->scene_;
+	if(auto p = parent_.lock()){
+		scene_ = p->scene_;
 	}
 	//addComponent<Location>();
 }
@@ -18,7 +18,15 @@ GameObject::~GameObject(){
 
 void GameObject::draw()
 {
+	for(auto& comp : components){
+		if(auto drawable = std::dynamic_pointer_cast<Drawable>(comp)){
+			drawable->draw();
+		}
+	}
 
+	for(auto& child: childs_){
+		child->draw();
+	}
 }
 void GameObject::setScene(std::weak_ptr<Scene> scene)
 {
