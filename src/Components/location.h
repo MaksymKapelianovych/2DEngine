@@ -26,7 +26,7 @@ class Location : public Component
     glm::vec2 velocity_; // todo maybe change to enum Direction and double speed
 public:
 	Location() = delete;
-	explicit Location(const std::weak_ptr<GameObject> &owner);
+	explicit Location(const std::weak_ptr<GameObject> &owner, const glm::vec2& pos);
 	~Location() override;
 
     void moveTo(glm::vec2 newLocation);

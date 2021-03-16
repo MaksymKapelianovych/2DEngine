@@ -34,8 +34,18 @@ protected:
 
     std::vector<std::shared_ptr<Component>> components;
 
+	explicit GameObject(std::weak_ptr<GameObject> parent = std::weak_ptr<GameObject>());
+
 public:
-    explicit GameObject(std::weak_ptr<GameObject> parent = std::weak_ptr<GameObject>(), const glm::vec3 &pos = glm::vec3(0.f));
+	static std::shared_ptr<GameObject> create(std::weak_ptr<GameObject> parent = std::weak_ptr<GameObject>(), const glm::vec2 &pos = glm::vec2(0.f));
+	template <class CompType>
+	std::shared_ptr<CompType> addComponent();
+	template <class CompType, class ...Args>
+	std::shared_ptr<CompType> addComponent(Args... args);
+	template <class CompType>
+	std::shared_ptr<CompType> getComponent() const;
+
+
     ~GameObject();
 
     void update(GLfloat dt);
@@ -45,12 +55,7 @@ public:
     [[nodiscard]] std::weak_ptr<GameObject> getParent() const; // todo maybe change to std::optional
 	void addChild(std::shared_ptr<GameObject> &&child);
 
-	template <class CompType>
-	std::shared_ptr<CompType> addComponent();
-	template <class CompType>
-	std::shared_ptr<CompType> getComponent() const;
 };
-
 template <class CompType>
 std::shared_ptr<CompType> GameObject::addComponent()
 {
@@ -63,6 +68,21 @@ std::shared_ptr<CompType> GameObject::addComponent()
 		}
 	}
 	return std::dynamic_pointer_cast<CompType>(components.emplace_back(Component::create<CompType>(weak_from_this())));
+}
+
+template <class CompType, class ...Args>
+std::shared_ptr<CompType> GameObject::addComponent(Args... args)
+{
+	if(getComponent<CompType>()){
+		return nullptr;
+	}
+	if constexpr (std::is_base_of_v<Drawable, CompType>){
+		if(getComponent<Drawable>()){
+			return nullptr;
+		}
+	}
+		return std::dynamic_pointer_cast<CompType>(components.emplace_back(Component::create<CompType>(weak_from_this(),
+			std::forward<Args...>(args...))));
 }
 
 template <class CompType>

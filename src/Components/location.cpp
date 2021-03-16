@@ -3,7 +3,7 @@
 #include "Gui/game_object.h"
 #include "Engine/Engine.h"
 
-Location::Location(const std::weak_ptr<GameObject> &owner) : Component(owner), velocity_(0.f)
+Location::Location(const std::weak_ptr<GameObject> &owner, const glm::vec2& pos) : Component(owner), position_(pos), velocity_(0.f)
 {
 }
 
