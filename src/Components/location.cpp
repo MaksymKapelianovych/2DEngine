@@ -20,6 +20,19 @@ void Location::moveBy(glm::vec2 offset)
 {
     position_ += offset;
 }
+void Location::setRotationAngle(float angle)
+{
+	rotationAngle_ = angle;
+}
+void Location::rotate(float angle)
+{
+	rotationAngle_ += angle;
+}
+float Location::getRotationAngle() const
+{
+	return rotationAngle_;
+}
+
 
 glm::vec2 Location::getScreenPos()
 {

@@ -24,6 +24,8 @@ class Location : public Component
     glm::vec2 position_;
     glm::vec4 matrixPos_;
     glm::vec2 velocity_; // todo maybe change to enum Direction and double speed
+    float rotationAngle_;
+
 public:
 	Location() = delete;
 	explicit Location(const std::weak_ptr<GameObject> &owner, const glm::vec2& pos);
@@ -31,6 +33,10 @@ public:
 
     void moveTo(glm::vec2 newLocation);
     void moveBy(glm::vec2 offset);
+
+    void setRotationAngle(float angle);
+    void rotate(float angle);
+    float getRotationAngle() const;
 
 
     // Component interface
