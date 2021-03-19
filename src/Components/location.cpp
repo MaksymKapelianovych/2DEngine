@@ -3,7 +3,8 @@
 #include "Gui/game_object.h"
 #include "Engine/Engine.h"
 
-Location::Location(const std::weak_ptr<GameObject> &owner, const glm::vec2& pos) : Component(owner), position_(pos), velocity_(0.f)
+Location::Location(const std::weak_ptr<GameObject> &owner, const glm::vec2& pos)
+	: Component(owner), position_(pos), velocity_(0.f), rotationAngle_(0.f)
 {
 }
 
@@ -28,7 +29,14 @@ void Location::rotate(float angle)
 {
 	rotationAngle_ += angle;
 }
-float Location::getRotationAngle() const
+float Location::getWorldRotationAngle() const
+{
+	if(auto owner = owner_.lock()->getParent().lock()){
+		return owner->getComponent<Location>()->getWorldRotationAngle() + getLocalRotationAngle();
+	}
+	return getLocalRotationAngle();
+}
+float Location::getLocalRotationAngle() const
 {
 	return rotationAngle_;
 }
@@ -55,6 +63,14 @@ void Location::update(GLfloat deltaTime)
     position_ += velocity_ * deltaTime;
 }
 
+glm::vec2 Location::getWorldPosition() const
+{
+	if(auto owner = owner_.lock()->getParent().lock()){
+		return owner->getComponent<Location>()->getWorldPosition() + getLocalPosition();
+	}
+	return getLocalPosition();
+}
+
 glm::vec2 Location::getLocalPosition() const
 {
     return position_;
@@ -78,12 +94,5 @@ glm::vec2 Location::getVelocity() const
 void Location::setVelocity(const glm::vec2 &velocity)
 {
     velocity_ = velocity;
-}
-glm::vec2 Location::getWorldPosition() const
-{
-	if(auto owner = owner_.lock()->getParent().lock()){
-		return owner->getComponent<Location>()->getWorldPosition() + getLocalPosition();
-	}
-	return getLocalPosition();
 }
 

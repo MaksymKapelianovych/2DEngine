@@ -36,7 +36,6 @@ public:
 
     void setRotationAngle(float angle);
     void rotate(float angle);
-    float getRotationAngle() const;
 
 
     // Component interface
@@ -51,6 +50,8 @@ public:
     [[nodiscard]] glm::vec2 getLocalPosition() const;
     [[nodiscard]] glm::vec2 getWorldPosition() const;
 	[[nodiscard]] glm::vec2 getVelocity() const;
+	float getLocalRotationAngle() const;
+	float getWorldRotationAngle() const;
 
 	void setPosition(const glm::vec2 &position);
     void setVelocity(const glm::vec2 &velocity);

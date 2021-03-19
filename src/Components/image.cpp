@@ -70,7 +70,7 @@ void Image::draw()
 	glm::mat4 model{1.f};
 	model = glm::translate(model, glm::vec3(center, 0.f));
 	model = glm::scale(model, glm::vec3(width_, height_, 0.f));
-	model = glm::rotate(model, ptr->getRotationAngle(), glm::vec3{0.f, 0.f, 1.f});
+	model = glm::rotate(model, ptr->getWorldRotationAngle(), glm::vec3{0.f, 0.f, 1.f});
 
 	shader_->use();
 
