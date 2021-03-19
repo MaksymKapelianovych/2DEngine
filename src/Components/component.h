@@ -48,7 +48,7 @@ public:
 	static std::shared_ptr<T> create(const std::weak_ptr<GameObject>& obj);
 
 	template <class T, class ...Args>
-	static std::shared_ptr<T> create(const std::weak_ptr<GameObject>& obj, Args ...args);
+	static std::shared_ptr<T> create(const std::weak_ptr<GameObject>& obj, Args&& ...args);
 
 	template <class CompType>
 	std::weak_ptr<CompType> weakFromThisByComponent();
@@ -79,9 +79,9 @@ std::shared_ptr<T> Component::create(const std::weak_ptr<GameObject>& obj)
 }
 
 template <class T, class ...Args>
-std::shared_ptr<T> Component::create(const std::weak_ptr<GameObject>& obj, Args... args)
+std::shared_ptr<T> Component::create(const std::weak_ptr<GameObject>& obj, Args&&... args)
 {
-	auto component = std::make_shared<T>(obj, std::forward<Args...>(args...));
+	auto component = std::make_shared<T>(obj, std::forward<Args>(args)...);
 	return component;
 }
 

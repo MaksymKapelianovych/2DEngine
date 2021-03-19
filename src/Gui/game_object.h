@@ -38,10 +38,10 @@ protected:
 
 public:
 	static std::shared_ptr<GameObject> create(std::weak_ptr<GameObject> parent = std::weak_ptr<GameObject>(), const glm::vec2 &pos = glm::vec2(0.f));
-	template <class CompType>
-	std::shared_ptr<CompType> addComponent();
+//	template <class CompType>
+//	std::shared_ptr<CompType> addComponent();
 	template <class CompType, class ...Args>
-	std::shared_ptr<CompType> addComponent(Args... args);
+	std::shared_ptr<CompType> addComponent(Args&& ...args);
 	template <class CompType>
 	std::shared_ptr<CompType> getComponent() const;
 
@@ -56,22 +56,22 @@ public:
 	void addChild(std::shared_ptr<GameObject> &&child);
 
 };
-template <class CompType>
-std::shared_ptr<CompType> GameObject::addComponent()
-{
-	if(getComponent<CompType>()){
-		return nullptr;
-	}
-	if constexpr (std::is_base_of_v<Drawable, CompType>){
-		if(getComponent<Drawable>()){
-			return nullptr;
-		}
-	}
-	return std::dynamic_pointer_cast<CompType>(components.emplace_back(Component::create<CompType>(weak_from_this())));
-}
+//template <class CompType>
+//std::shared_ptr<CompType> GameObject::addComponent()
+//{
+//	if(getComponent<CompType>()){
+//		return nullptr;
+//	}
+//	if constexpr (std::is_base_of_v<Drawable, CompType>){
+//		if(getComponent<Drawable>()){
+//			return nullptr;
+//		}
+//	}
+//	return std::dynamic_pointer_cast<CompType>(components.emplace_back(Component::create<CompType>(weak_from_this())));
+//}
 
 template <class CompType, class ...Args>
-std::shared_ptr<CompType> GameObject::addComponent(Args... args)
+std::shared_ptr<CompType> GameObject::addComponent(Args&&... args)
 {
 	if(getComponent<CompType>()){
 		return nullptr;
@@ -82,7 +82,7 @@ std::shared_ptr<CompType> GameObject::addComponent(Args... args)
 		}
 	}
 		return std::dynamic_pointer_cast<CompType>(components.emplace_back(Component::create<CompType>(weak_from_this(),
-			std::forward<Args...>(args...))));
+			std::forward<Args>(args)...)));
 }
 
 template <class CompType>
