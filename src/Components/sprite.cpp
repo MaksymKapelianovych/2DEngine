@@ -82,11 +82,13 @@ void Sprite::draw()
 
 
 	auto owner = owner_.lock();
-	glm::vec2 center = owner->getComponent<Location>()->getWorldPosition();
+	const std::shared_ptr<Location>& ptr = owner->getComponent<Location>();
+	glm::vec2 center = ptr->getWorldPosition();
 	glm::mat4 projection = owner->getScene()->getProjection();
 	glm::mat4 model{1.f};
 	model = glm::translate(model, glm::vec3(center, 0.f));
 	model = glm::scale(model, glm::vec3(300.f, 300.f, 0.f));
+	model = glm::rotate(model, ptr->getRotationAngle(), glm::vec3{0.f, 0.f, 1.f});
 
 	shader_->use();
 
