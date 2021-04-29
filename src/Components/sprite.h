@@ -14,7 +14,7 @@
 
 #include "component.h"
 #include "drawable.h"
-#include "Gui/shader.h"
+#include "RenderSystem/shader.h"
 
 class Sprite : public Component, public Drawable
 {

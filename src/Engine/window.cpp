@@ -8,6 +8,7 @@ Window::Window(GLFWwindow *window, GLuint width, GLuint height)
 
 }
 
+
 void Window::init()
 {
 	scene_ = std::make_shared<Scene>(weak_from_this());
@@ -17,7 +18,7 @@ void Window::init()
 
 void Window::update(GLfloat deltaTime)
 {
-
+	scene_->update(deltaTime);
 }
 
 void Window::draw()
@@ -68,3 +69,4 @@ void Window::addToPanel(const std::shared_ptr<GameObject>& object)
 {
 	panel_->addObject(object);
 }
+

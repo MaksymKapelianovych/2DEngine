@@ -18,6 +18,9 @@
 
 #include "Utils/constants.h"
 #include "Components/component.h"
+#include "Components/drawable.h"
+#include "Components/Collider.h"
+
 
 class Shader;
 class Scene;
@@ -33,9 +36,9 @@ protected:
 	void setScene(std::weak_ptr<Scene> scene);
 
     std::vector<std::shared_ptr<Component>> components;
-
 	explicit GameObject(std::weak_ptr<GameObject> parent = std::weak_ptr<GameObject>());
 
+	bool updated_;
 public:
 	static std::shared_ptr<GameObject> create(std::weak_ptr<GameObject> parent = std::weak_ptr<GameObject>(), const glm::vec2 &pos = glm::vec2(0.f));
 //	template <class CompType>
@@ -53,22 +56,11 @@ public:
 
     [[nodiscard]] std::shared_ptr<Scene> getScene() const;
     [[nodiscard]] std::weak_ptr<GameObject> getParent() const; // todo maybe change to std::optional
-	void addChild(std::shared_ptr<GameObject> &&child);
+	void addChild(std::shared_ptr<GameObject> child);
+	void removeChild(std::shared_ptr<GameObject> child);
 
+	void setReadyToUpdate();
 };
-//template <class CompType>
-//std::shared_ptr<CompType> GameObject::addComponent()
-//{
-//	if(getComponent<CompType>()){
-//		return nullptr;
-//	}
-//	if constexpr (std::is_base_of_v<Drawable, CompType>){
-//		if(getComponent<Drawable>()){
-//			return nullptr;
-//		}
-//	}
-//	return std::dynamic_pointer_cast<CompType>(components.emplace_back(Component::create<CompType>(weak_from_this())));
-//}
 
 template <class CompType, class ...Args>
 std::shared_ptr<CompType> GameObject::addComponent(Args&&... args)
@@ -80,8 +72,12 @@ std::shared_ptr<CompType> GameObject::addComponent(Args&&... args)
 		if(getComponent<Drawable>()){
 			return nullptr;
 		}
+	}else if constexpr (std::is_base_of_v<Collider, CompType>){
+		if(getComponent<Collider>()){
+			return nullptr;
+		}
 	}
-		return std::dynamic_pointer_cast<CompType>(components.emplace_back(Component::create<CompType>(weak_from_this(),
+	return std::dynamic_pointer_cast<CompType>(components.emplace_back(Component::create<CompType>(weak_from_this(),
 			std::forward<Args>(args)...)));
 }
 

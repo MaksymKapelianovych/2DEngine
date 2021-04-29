@@ -1,5 +1,5 @@
 #include "component.h"
-#include "Gui/game_object.h"
+#include "Engine/game_object.h"
 
 std::shared_ptr<GameObject> Component::getOwner() const
 {

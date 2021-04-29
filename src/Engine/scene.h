@@ -16,7 +16,7 @@
 
 #include "Utils/constants.h"
 //#include "window.h"
-#include "camera.h"
+#include "RenderSystem/camera.h"
 
 //Create Scene builder
 class Window;
@@ -31,15 +31,6 @@ private:
 
     std::weak_ptr<Window> parent_;
 	std::vector<std::shared_ptr<GameObject>> objects_;
-	//std::vector<std::weak_ptr<Drawable>> drawable_;
-
-    static bool    keys[1024];
-//    GLfloat lastX  =  width_  / 2.0;
-//    GLfloat lastY  =  height_ / 2.0;
-
-    Mouse mouseState = Mouse::NONE;
-    bool enableDrag = false;
-
 
 public:
     Scene(std::weak_ptr<Window> parent);

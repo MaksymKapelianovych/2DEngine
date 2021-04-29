@@ -11,7 +11,8 @@
 #include <memory>
 
 #include "component.h"
-#include "Gui/shader.h"
+#include "RenderSystem/shader.h"
+#include "drawable.h"
 
 class Image : public Component, public Drawable
 {
@@ -42,6 +43,8 @@ public:
 	void setTexture(const GLchar *path);
 	void draw() override;
 
+	void setWidth(int width);
+	void setHeight(int height);
 	int getWidth() const;
 	int getHeight() const;
 

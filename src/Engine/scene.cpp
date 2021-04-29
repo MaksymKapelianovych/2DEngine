@@ -5,10 +5,7 @@
 #include "game_object.h"
 #include "Components/drawable.h"
 #include "Engine/Engine.h"
-#include "camera.h"
-
-bool Scene::keys[1024];
-
+#include "RenderSystem/camera.h"
 
 Scene::Scene(std::weak_ptr<Window> parent)
 		: std::enable_shared_from_this<Scene>(), parent_(std::move(parent))
@@ -35,6 +32,9 @@ glm::vec3 Scene::getCameraPosition()
 
 void Scene::update(GLfloat deltaTime)
 {
+	for(auto& object : objects_){
+		object->setReadyToUpdate();
+	}
 	for(auto& object : objects_){
 		object->update(deltaTime);
 	}

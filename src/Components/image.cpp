@@ -5,8 +5,8 @@
 #include "Utils/stb_image.h"
 
 #include "image.h"
-#include "Gui/game_object.h"
-#include "Gui/scene.h"
+#include "Engine/game_object.h"
+#include "Engine/scene.h"
 #include "location.h"
 #include <iostream>
 
@@ -87,6 +87,14 @@ void Image::draw()
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
+void Image::setWidth(int width)
+{
+	width_ = width;
+}
+void Image::setHeight(int height)
+{
+	height_ = height;
+}
 int Image::getWidth() const
 {
 	return width_;
@@ -99,3 +107,4 @@ void Image::update(GLfloat deltaTime)
 {
 
 }
+

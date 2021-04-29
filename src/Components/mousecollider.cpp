@@ -1,24 +1,39 @@
 #include "mousecollider.h"
-#include "2DEngine/widget.h"
-#include "2DEngine/scene.h"
+#include "PhysicsSystem/PhysicsSystem.h"
+#include "EventSystem/FunctionWrapper.h"
+#include "EventSystem/Signal.h"
+#include "EventSystem/eventqueue.h"
 
-//MouseCollider::MouseCollider(Scene *scene)
-//    : Component(), m_scene(scene)
-//{
 
-//}
 
-//MouseCollider::~MouseCollider()
-//{
+MouseCollider::MouseCollider(const std::weak_ptr<GameObject>& owner)
+	: Component(owner)
+{
+	EventQueue::addFunctionForMouse(GLFW_MOUSE_BUTTON_LEFT, {&MouseCollider::onLeftButtonClicked, this});
+	EventQueue::addFunctionForMouse(GLFW_MOUSE_BUTTON_RIGHT, {&MouseCollider::onRightButtonClicked, this});
 
-//}
+}
 
-//void MouseCollider::update(GLfloat deltaTime)
-//{
+MouseCollider::~MouseCollider()
+{
+	EventQueue::removeFunctionForMouse(GLFW_MOUSE_BUTTON_LEFT, {&MouseCollider::onLeftButtonClicked, this});
+	EventQueue::removeFunctionForMouse(GLFW_MOUSE_BUTTON_RIGHT, {&MouseCollider::onRightButtonClicked, this});
+}
 
-//}
+void MouseCollider::update(GLfloat deltaTime)
+{
 
-//std::string MouseCollider::type() const
-//{
-//    return "MouseCollider";
-//}
+}
+
+void MouseCollider::addOnCollide(CollideSignal::hashable_function_t function)
+{
+	collide.add(function);
+}
+void MouseCollider::onLeftButtonClicked(double x, double y)
+{
+
+}
+void MouseCollider::onRightButtonClicked(double x, double y)
+{
+
+}

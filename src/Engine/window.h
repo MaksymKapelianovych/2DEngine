@@ -23,9 +23,10 @@ class Window : public std::enable_shared_from_this<Window>
 public:
 	//Window() = delete;
     Window(GLFWwindow *window, GLuint width = 800, GLuint height = 600);
+	virtual ~Window() = default;
 	void init();
 
-    void update(GLfloat deltaTime);
+    virtual void update(GLfloat deltaTime);
     void draw();
 
     //Getters & setters

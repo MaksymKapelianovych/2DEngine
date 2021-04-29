@@ -1,7 +1,6 @@
 #include <cstdio>
 #include <cmath>
 #include <cstdlib>
-#include <QImage>
 
 namespace noise {
 
@@ -80,17 +79,17 @@ double ValueNoise_2D(double x, double y) {
     return total / frequency;
 }
 
-//uchar* getTexture() {
-//    uchar* img = new uchar[4*numX*numY];
-//    for (int y = 0; y < numY; ++y) {
-//        for (int x = 0; x < numX; ++x) {
-//            double noise = ValueNoise_2D(x, y);
-//            img[4*(y*numY+x)] = noise*255;
-//            img[4*(y*numY+x)+1] = noise*255;
-//            img[4*(y*numY+x)+2] = noise*255;
-//            img[4*(y*numY+x)+3] = 255;
-//        }
-//    }
-//    return img;
-//}
+uchar* getTexture() {
+    uchar* img = new uchar[4*numX*numY];
+    for (int y = 0; y < numY; ++y) {
+        for (int x = 0; x < numX; ++x) {
+            double noise = ValueNoise_2D(x, y);
+            img[4*(y*numY+x)] = noise*255;
+            img[4*(y*numY+x)+1] = noise*255;
+            img[4*(y*numY+x)+2] = noise*255;
+            img[4*(y*numY+x)+3] = 255;
+        }
+    }
+    return img;
+}
 }

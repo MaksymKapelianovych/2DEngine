@@ -4,8 +4,8 @@
 #include <iostream>
 
 #include "sprite.h"
-#include "Gui/scene.h"
-#include "Gui/game_object.h"
+#include "Engine/scene.h"
+#include "Engine/game_object.h"
 #include "location.h"
 
 const GLfloat Sprite::WIDTH_SCALE = 10.f;
@@ -87,7 +87,7 @@ void Sprite::draw()
 	glm::mat4 projection = owner->getScene()->getProjection();
 	glm::mat4 model{1.f};
 	model = glm::translate(model, glm::vec3(center, 0.f));
-	model = glm::scale(model, glm::vec3(300.f, 300.f, 0.f));
+	model = glm::scale(model, glm::vec3(12.f, 12.f, 0.f));
 	model = glm::rotate(model, ptr->getWorldRotationAngle(), glm::vec3{0.f, 0.f, 1.f});
 
 	shader_->use();

@@ -52,25 +52,42 @@ std::shared_ptr<Scene> GameObject::getScene() const
 }
 void GameObject::update(GLfloat dt)
 {
+	if(updated_){
+		return;
+	}
+	updated_ = true;
 	for(auto& comp : components){
 		comp->update(dt);
 	}
 
-//	for(auto& child: childs_){
-//		child->update(dt);
-//	}
-}
-void GameObject::addChild(std::shared_ptr<GameObject>&& child)
-{
-	if(child.use_count() != 1){
-		std::terminate(); // todo change with warning
+	for(auto& child: childs_){
+		child->update(dt);
 	}
+}
+void GameObject::addChild(std::shared_ptr<GameObject> child)
+{
+//	if(child.use_count() != 1){
+//		std::terminate(); // todo change with warning
+//	}
+	child->parent_ = weak_from_this();
 	childs_.emplace_back(child);
+}
+void GameObject::removeChild(std::shared_ptr<GameObject> child)
+{
+	childs_.erase(std::remove(childs_.begin(), childs_.end(), child), childs_.end());
 }
 std::weak_ptr<GameObject> GameObject::getParent() const
 {
 	return parent_;
 }
+void GameObject::setReadyToUpdate()
+{
+	updated_ = false;
+	for(auto& child: childs_){
+		child->setReadyToUpdate();
+	}
+}
+
 
 
 

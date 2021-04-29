@@ -3,23 +3,29 @@
 #include "component.h"
 #include <list>
 #include <string>
+#include "PhysicsSystem/PhysicsSystem.h"
+#include "EventSystem/FunctionWrapper.h"
+#include "EventSystem/Signal.h"
+#include "component.h"
 
-//class Widget;
-//class Scene;
+class MouseCollider : public Component
+{
 
-//class MouseCollider : public Component
-//{
-//    std::list<Widget*> m_objects;
-//    Scene *m_scene;
-//public:
-//    MouseCollider(Scene *scene);
-//    ~MouseCollider();
+protected:
+	using CollideSignal = Signal<>;
+	CollideSignal collide;
 
-//    void update(GLfloat deltaTime) override;
-////    void addObject(Widget *) override;
-////    void removeObject(Widget *) override;
+public:
+    MouseCollider(const std::weak_ptr<GameObject>& owner);
+    ~MouseCollider();
 
-//    std::string type() const override;
-//};
+    void update(GLfloat deltaTime) override;
+
+	void addOnCollide(CollideSignal::hashable_function_t function);
+
+private:
+	void onLeftButtonClicked(double x, double y);
+	void onRightButtonClicked(double x, double y);
+};
 
 #endif // INC_2DENGINE_MOUSECOLLIDER_H

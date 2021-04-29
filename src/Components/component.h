@@ -16,7 +16,6 @@
 #include <memory>
 
 #include "Utils/constants.h"
-#include "drawable.h"
 
 class GameObject;
 
@@ -32,7 +31,7 @@ class GameObject;
  *
  * @tparam T
  */
-class Component : protected std::enable_shared_from_this<Component>
+class Component : public std::enable_shared_from_this<Component>
 {
 protected:
     std::weak_ptr<GameObject> owner_; 			 		//Component does not control owner`s life
@@ -44,8 +43,8 @@ protected:
 	 * Static functions
 	 */
 public:
-	template <class T>
-	static std::shared_ptr<T> create(const std::weak_ptr<GameObject>& obj);
+//	template <class T>
+//	static std::shared_ptr<T> create(const std::weak_ptr<GameObject>& obj);
 
 	template <class T, class ...Args>
 	static std::shared_ptr<T> create(const std::weak_ptr<GameObject>& obj, Args&& ...args);
@@ -70,13 +69,13 @@ public:
 
     std::shared_ptr<GameObject> getOwner() const;
 };
-
-template <class T>
-std::shared_ptr<T> Component::create(const std::weak_ptr<GameObject>& obj)
-{
-	auto component = std::make_shared<T>(obj);
-	return component;
-}
+//
+//template <class T>
+//std::shared_ptr<T> Component::create(const std::weak_ptr<GameObject>& obj)
+//{
+//	std::shared_ptr<T> component(new T(obj));
+//	return component;
+//}
 
 template <class T, class ...Args>
 std::shared_ptr<T> Component::create(const std::weak_ptr<GameObject>& obj, Args&&... args)

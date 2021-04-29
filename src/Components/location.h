@@ -17,13 +17,17 @@
 
 #include "component.h"
 
+class Collider;
+
 class Location : public Component
 {
 	friend class Component;
+	friend class Collider;
 
     glm::vec2 position_;
     glm::vec4 matrixPos_;
     glm::vec2 velocity_; // todo maybe change to enum Direction and double speed
+    glm::vec2 previousPosition_;
     float rotationAngle_;
 
 public:
@@ -55,6 +59,9 @@ public:
 
 	void setPosition(const glm::vec2 &position);
     void setVelocity(const glm::vec2 &velocity);
+
+private:
+	void onCollide(std::weak_ptr<Collider> other);
 };
 
 

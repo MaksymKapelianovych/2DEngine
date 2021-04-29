@@ -1,11 +1,14 @@
 #include "location.h"
-#include "Gui/scene.h"
-#include "Gui/game_object.h"
+#include "Engine/scene.h"
+#include "Engine/game_object.h"
 #include "Engine/Engine.h"
+#include "Collider.h"
+#include "PhysicsSystem/PhysicsSystem.h"
 
 Location::Location(const std::weak_ptr<GameObject> &owner, const glm::vec2& pos)
 	: Component(owner), position_(pos), velocity_(0.f), rotationAngle_(0.f)
 {
+
 }
 
 Location::~Location(){
@@ -60,7 +63,12 @@ glm::vec2 Location::getScreenPos()
 
 void Location::update(GLfloat deltaTime)
 {
+	previousPosition_ = position_;
     position_ += velocity_ * deltaTime;
+
+    if(auto collider = getOwner()->getComponent<Collider>()){
+    	PhysicsSystem::checkCollision(collider);
+    }
 }
 
 glm::vec2 Location::getWorldPosition() const
@@ -94,5 +102,15 @@ glm::vec2 Location::getVelocity() const
 void Location::setVelocity(const glm::vec2 &velocity)
 {
     velocity_ = velocity;
+}
+void Location::onCollide(std::weak_ptr<Collider> other)
+{
+	if(auto collider = getOwner()->getComponent<Collider>()){
+		std::string a = collider->collisionName;
+		std::string b = other.lock()->collisionName;
+		if(PhysicsSystem::getCollisionType(collider->collisionName, other.lock()->collisionName) == CollisionType::BLOCK){
+			position_ = previousPosition_;
+		}
+	}
 }
 
